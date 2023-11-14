@@ -1,0 +1,47 @@
+@model IEnumerable<CartItem>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Shopping Cart</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                decimal total = item.Quantity * item.Product.UnitPrice;
+                <tr>
+                    <td>@item.Product.ProductName</td>
+                    <td>@item.Product.UnitPrice.ToString("C")</td>
+                    <td>@item.Quantity</td>
+                    <td>@total.ToString("C")</td>
+                    <td>
+                        <form asp-action="Remove" asp-route-id="@item.ProductId" method="post">
+                            <input type="submit" value="Remove" class="btn btn-danger" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 offset-md-6">
+      <h3>Total: $<span id="total_cart_value">@Model.Sum(x => x.Quantity * x.Product.UnitPrice).ToString("C")</span></h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 offset-md-6">
+      <button class="btn btn-primary" id="checkout_button">Check Out</button>
+    </div>
+  </div>
+</div>
