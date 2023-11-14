@@ -31,6 +31,7 @@ $(function () {
     });
     // delegated event listener
     $('#product_rows').on('click', 'tr', function(){
+        debugger
       // make sure a customer is logged in
       if ($('#User').data('customer').toLowerCase() == "true"){
         $('#ProductId').html($(this).data('id'));
@@ -53,6 +54,7 @@ $(function () {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     $('#addToCart').on('click', function(){
+       
       $('#cartModal').modal('hide');
       $.ajax({
         headers: { "Content-Type": "application/json" },
@@ -65,7 +67,11 @@ $(function () {
         }),
         success: function (response, textStatus, jqXhr) {
           // success
-          toast("Product Added", `${response.product.productName} successfully added to cart.`);
+
+        
+         // console.log(`${response.customer.email}`)
+          toast("Product Added", `${response.product.productName} ${response.customer.email} successfully added to cart.`);
+        
         },
         error: function (jqXHR, textStatus, errorThrown) {
           // log the error to the console
@@ -79,5 +85,11 @@ $(function () {
     $('#toast_body').html(message);
     $('#cart_toast').toast({ delay: 2500 }).toast('show');
   }
+
+
+
+
+
+
 });
   
