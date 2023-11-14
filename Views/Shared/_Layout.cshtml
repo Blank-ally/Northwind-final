@@ -62,7 +62,7 @@
                     </ul>
                   
                 </div>
-                <div> <a class="m-3" asp-controller="" asp-action=""><i class="fas fa-shopping-cart"></i>Cart</a> </div>
+                <div> <a class="m-3" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i>Cart</a> </div>
 
                 @if (User?.Identity?.IsAuthenticated ?? false)
                 {
