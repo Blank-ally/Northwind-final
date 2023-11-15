@@ -1,3 +1,4 @@
+using System.Xml.Schema;
 using Microsoft.EntityFrameworkCore;
 
 public class DataContext : DbContext
@@ -26,6 +27,17 @@ public class DataContext : DbContext
     customerToUpdate.Phone = customer.Phone;
     customerToUpdate.Fax = customer.Fax;
     SaveChanges();
+  }
+
+  public void EditCart (CartItem cartItem)
+  {
+    var CartItemToUpdate = CartItems.FirstOrDefault(c => c.CartItemId == cartItem.CartItemId);
+    CartItemToUpdate.Quantity = cartItem.Quantity;
+  }
+  public void DeleteCartItem(CartItem cartItem){
+    this.Remove(cartItem);
+    this.SaveChanges();
+
   }
   public CartItem AddToCart(CartItemJSON cartItemJSON)
   {
