@@ -33,6 +33,7 @@ public class DataContext : DbContext
   {
     var CartItemToUpdate = CartItems.FirstOrDefault(c => c.CartItemId == cartItem.CartItemId);
     CartItemToUpdate.Quantity = cartItem.Quantity;
+    
   }
   public void DeleteCartItem(CartItem cartItem){
     this.Remove(cartItem);

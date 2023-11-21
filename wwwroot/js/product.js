@@ -32,7 +32,7 @@ $(function () {
   // delegated event listener
   $('#product_rows').on('click', 'tr', function(){
     // make sure a customer is logged in
-    if ($('#User').data('customer').toLowerCase() == "true"){
+    if ($('#User').data('customer').toLowerCase() == "true" && $('tr').hasClass("discontinued") == false ){
       $('#ProductId').html($(this).data('id'));
       $('#ProductName').html($(this).data('name'));
       $('#UnitPrice').html($(this).data('price').toFixed(2));
@@ -40,37 +40,14 @@ $(function () {
       $('#Quantity').change();
       $('#cartModal').modal();
     } else {
+      if($('tr').hasClass("discontinued") == true){
+        toast("Discountinued", "this product is discountinued it is no longer available for purchase");
+
+      }else {
       toast("Access Denied", "You must be signed in as a customer to access the cart.");
+      }
     }
   });
-
-
-  $('#updcrt').on('click', function(){
-   
-    debugger;
-   // make sure a customer is logged in
-    if ($('#User').data('customer').toLowerCase() == "true"){
-      $('#ProductId').html($(this).data('id'));
-      $('#ProductName').html($(this).data('name'));
-      $('#UnitPrice').html($(this).data('price').toFixed(2));
-    //  calculate and display total in modal
-      $('#Quantity').change();
-      $('#cartModal').modal();
-    } else {
-      toast("Access Denied", "You must be signed in as a customer to access the cart.");
-    }
-  });
-
-
-  // update total when cart quantity is changed
-  $('#Quantity').change(function () {
-    var total = parseInt($(this).val()) * parseFloat($('#UnitPrice').html());
-    $('#Total').html(numberWithCommas(total.toFixed(2)));
-  });
-  // function to display commas in number
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
 
 
 
@@ -110,6 +87,69 @@ function toast(header, message) {
   $('#toast_body').html(message);
   $('#cart_toast').toast({ delay: 2500 }).toast('show');
 }
+
+
+
+$('#updcrt').on('click',function(){
+  debugger;
+ // make sure a customer is logged in
+  if ($('#User').data('customer').toLowerCase() == "true"){
+    $('#ProductId').html($(this).data('id'));
+    $('#ProductName').html($(this).data('name'));
+    $('#UnitPrice').html(parseInt($(this).data('price')).toFixed(2));
+    /// rework
+    $('#Quantity').change();
+    $('#cartModal').modal();
+  } else {
+    toast("Access Denied", "You must be signed in as a customer to access the cart.");
+  }
+});
+
+
+// update total when cart quantity is changed
+$('#Quantity').change(function () {
+  var total = parseInt($(this).val()) * parseFloat($('#UnitPrice').html());
+  $('#Total').html(numberWithCommas(total.toFixed(2)));
+});
+// function to display commas in number
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+
+
+
+$('#Update').on('click', function(){
+  $('#cartModal').modal('hide');
+//   $.ajax({
+//     headers: { "Content-Type": "application/json" },
+//     url: "../../cart/edit",
+//     type: 'post',
+//     data: JSON.stringify({
+//       "id": Number($('#ProductId').html()),
+//       "email": $('#User').data('email'),
+//       "qty": Number($('#Quantity').val()) 
+//     }),
+//     success: function (response, textStatus, jqXhr) {
+//       // success
+//       toast("Product Added", `${response.product.productName} successfully added to cart.`);
+
+
+//     },
+//     error: function (jqXHR, textStatus, errorThrown) {
+//       // log the error to the console
+//       console.log("The following error occured: " + jqXHR.status, errorThrown);
+//       toast("Error", "Please try again later.");
+//     }
+  });
+//});
+// function toast(header, message) {
+// $('#toast_header').html(header);
+// $('#toast_body').html(message);
+// $('#cart_toast').toast({ delay: 2500 }).toast('show');
+// }
+
 
 
 
