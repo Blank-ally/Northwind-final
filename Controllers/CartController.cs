@@ -18,7 +18,12 @@ public class CartController : Controller
     }
 
     // Display all items in customer's cart
-    public IActionResult Index() => View(_dataContext.CartItems.Include(p => p.Product).OrderBy(c => c.Product.ProductName));
+    public IActionResult Index(int id ) 
+    {
+         ViewBag.id = id;
+    return
+         View(_dataContext.CartItems.Include(p => p.Product).Include(p => p.Customer).OrderBy(c => c.Product.ProductName));
+  }
 
     public IActionResult Remove(int id)
     {
@@ -27,9 +32,12 @@ public class CartController : Controller
            return RedirectToAction("Index");
 
     }
-    public IActionResult Edit(int id){
-        _dataContext.EditCart(_dataContext.CartItems.FirstOrDefault(c => c.CartItemId == id));
-        return RedirectToAction("Index");
-    }
   
+    public IActionResult Edit(int id)
+    {
+          _dataContext.EditCart(_dataContext.CartItems.FirstOrDefault(c => c.CartItemId == id));
+
+           return RedirectToAction("Index");
+
+    }
 }

@@ -96,7 +96,7 @@ $('#updcrt').on('click',function(){
   if ($('#User').data('customer').toLowerCase() == "true"){
     $('#ProductId').html($(this).data('id'));
     $('#ProductName').html($(this).data('name'));
-    $('#UnitPrice').html($(this).data('price').toFixed(2));
+    $('#UnitPrice').html(parseInt($(this).data('price')).toFixed(2));
     /// rework
     $('#Quantity').change();
     $('#cartModal').modal();
@@ -116,8 +116,12 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// $('#Update').on('click', function(){
-//   $('#cartModal').modal('hide');
+
+
+
+
+$('#Update').on('click', function(){
+  $('#cartModal').modal('hide');
 //   $.ajax({
 //     headers: { "Content-Type": "application/json" },
 //     url: "../../cart/edit",
@@ -138,8 +142,8 @@ function numberWithCommas(x) {
 //       console.log("The following error occured: " + jqXHR.status, errorThrown);
 //       toast("Error", "Please try again later.");
 //     }
-//   });
-// });
+  });
+//});
 // function toast(header, message) {
 // $('#toast_header').html(header);
 // $('#toast_body').html(message);
