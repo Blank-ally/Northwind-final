@@ -2,6 +2,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 [Authorize]
 public class CartController : Controller
@@ -16,82 +18,18 @@ public class CartController : Controller
     }
 
     // Display all items in customer's cart
-    public IActionResult Index()
-    {
-        var customer = GetCustomer();
+    public IActionResult Index() => View(_dataContext.CartItems.Include(p => p.Product).OrderBy(c => c.Product.ProductName));
 
-        if (customer != null)
-        {
-            return View(_dataContext.CartItems.Where(c => c.CustomerId == customer.CustomerId).OrderBy(ci => ci.Product.ProductName));
-        }
-
-        return View(Enumerable.Empty<CartItem>());
-    }
-
-
-
-    [HttpPost]
-    public IActionResult Add(int id, int qty)
-    {
-        var product = _dataContext.Products.Find(id);
-        var customer = GetCustomer();
-
-        if (product == null || customer == null)
-        {
-            return NotFound();
-        }
-
-        // Check if item already exists in the cart
-        var existingCartItem = _dataContext.CartItems.FirstOrDefault(c => c.ProductId == product.ProductId && c.CustomerId == customer.CustomerId);
-
-        if (existingCartItem != null)
-        {
-            // Item exists, increase quantity
-            existingCartItem.Quantity += qty;
-        }
-        else
-        {
-            // Item does not exist, add new
-            _dataContext.CartItems.Add(new CartItem
-            {
-                ProductId = product.ProductId,
-                CustomerId = customer.CustomerId,
-                Quantity = qty
-            });
-        }
-
-        _dataContext.SaveChanges();
-        return RedirectToAction("Index");
-    }
-
-    [HttpPost]
     public IActionResult Remove(int id)
     {
-        var product = _dataContext.Products.Find(id);
-        var customer = GetCustomer();
+            _dataContext.DeleteCartItem(_dataContext.CartItems.FirstOrDefault(c => c.CartItemId == id));
 
-        if (product == null || customer == null)
-        {
-            return NotFound();
-        }
+           return RedirectToAction("Index");
 
-        // Check if item exist in the cart
-        var existingCartItem = _dataContext.CartItems.FirstOrDefault(c => c.ProductId == product.ProductId && c.CustomerId == customer.CustomerId);
-
-        if (existingCartItem != null)
-        {
-            // Item exists, remove from cart
-            _dataContext.CartItems.Remove(existingCartItem);
-            _dataContext.SaveChanges();
-        }
-
+    }
+    public IActionResult Edit(int id){
+        _dataContext.EditCart(_dataContext.CartItems.FirstOrDefault(c => c.CartItemId == id));
         return RedirectToAction("Index");
     }
-
-    private Customer GetCustomer()
-    {
-        // Assuming the Email is unique and used as UserName in Identity.
-        var userId = _userManager.GetUserId(User);
-        return _dataContext.Customers.FirstOrDefault(c => c.Email == userId);
-    }
+  
 }
