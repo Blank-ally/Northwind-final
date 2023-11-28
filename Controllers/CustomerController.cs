@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.Serialization;
 
 public class CustomerController : Controller
 {
@@ -71,6 +73,8 @@ public class CustomerController : Controller
         _dataContext.EditCustomer(customer);
         return RedirectToAction("Index", "Home");
     }
+    public IActionResult Orders(Customer customer) => View(_dataContext.OrderDetails.Include(o => o.Order).Include(o => o.Order.Customer).Include(od =>od.Product));  //.Where(od => od.Order.Customer == customer)
+    
     private void AddErrorsFromResult(IdentityResult result)
     {
         foreach (IdentityError error in result.Errors)
