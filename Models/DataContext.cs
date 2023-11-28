@@ -10,6 +10,8 @@ public class DataContext : DbContext
   public DbSet<Discount> Discounts { get; set; }
   public DbSet<Customer> Customers { get; set; }
   public DbSet<CartItem> CartItems { get; set; }
+  public DbSet<OrderDetails> OrderDetails {get;set;}
+  public DbSet<Order> Orders {get;set;}
 
   public void AddCustomer(Customer customer)
   {
@@ -33,6 +35,7 @@ public class DataContext : DbContext
   {
     var CartItemToUpdate = CartItems.FirstOrDefault(c => c.CartItemId == cartItem.CartItemId);
     CartItemToUpdate.Quantity = cartItem.Quantity;
+    
   }
   public void DeleteCartItem(CartItem cartItem){
     this.Remove(cartItem);

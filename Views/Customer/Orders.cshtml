@@ -1,0 +1,41 @@
+@model IEnumerable<OrderDetails> 
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Order Number</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Order status</th>
+             <th scope="col">Order Total</th>
+
+            
+
+     
+          </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var group in Model.GroupBy(item => item.OrderId)){
+                var order = group.FirstOrDefault().Order;                    
+                
+                     <tr>
+                     <td>@order.OrderId</td>
+                    <td>@order.OrderDate</td> 
+                    @if(order.ShippedDate != null ){
+                        <td>shipped</td> 
+                    }else{
+                         <td>Processing</td> 
+                    }
+                    <td>@group.Sum(o => o.UnitPrice * (1 - o.Discount) * o.Quantity).ToString("C")</td>
+                  
+                </tr> 
+               
+               
+                
+                 
+            }
+
+
+
+        </tbody>
+      </table>
