@@ -31,5 +31,7 @@ public class CartController : Controller
         _dataContext.EditCart(_dataContext.CartItems.FirstOrDefault(c => c.CartItemId == id));
         return RedirectToAction("Index");
     }
+
+    public IActionResult CheckOut() => View(_dataContext.CartItems.Include(p => p.Product).OrderBy(c => c.Product.ProductName));
   
 }
