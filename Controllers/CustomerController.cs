@@ -73,6 +73,8 @@ public class CustomerController : Controller
         _dataContext.EditCustomer(customer);
         return RedirectToAction("Index", "Home");
     }
+
+    // add customer reference 
     public IActionResult Orders(Customer customer) => View(_dataContext.OrderDetails.Include(o => o.Order).Include(o => o.Order.Customer).Include(od =>od.Product));  //.Where(od => od.Order.Customer == customer)
     
     private void AddErrorsFromResult(IdentityResult result)
