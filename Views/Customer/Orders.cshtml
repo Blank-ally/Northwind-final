@@ -1,0 +1,76 @@
+@model IEnumerable<OrderDetails> 
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Order Number</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Order status</th>
+             <th scope="col">Order Total</th>
+            <th></th>
+
+     
+          </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var group in Model.GroupBy(item => item.OrderId)){
+                var order = group.FirstOrDefault().Order;                    
+                
+                     <tr>
+                     <td>@order.OrderId</td>
+                    <td>@order.OrderDate</td> 
+                    @if(order.ShippedDate != null ){
+                        <td>shipped</td> 
+                    }else{
+                         <td>Processing</td> 
+                    }
+                    <td>@group.Sum(o => o.UnitPrice * (1 - o.Discount) * o.Quantity).ToString("C")</td>
+                    <td>
+                      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#o-@order.OrderId" aria-expanded="false" aria-controls="o-@order.OrderId">
+                        Details
+                      </button>
+                      <div class="collapse" id="o-@order.OrderId">
+                        <div class="card card-body">
+                          
+                              <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Unit Price</th>
+      <th scope="col">Quantity</th>
+       <th scope="col">Discount</th>
+    
+    </tr>
+  </thead>
+  <tbody>
+                            @foreach (var item in group){
+
+    <tr>
+   
+      <td>@item.Product.ProductName</td>
+      <td>@item.Product.UnitPrice.ToString("C")</td>
+      <td>@item.Quantity</td>
+       <td>@item.Discount.ToString("P0")</td>
+    </tr>
+
+                            }
+                                  </tbody>
+</table>
+                        </div>
+                      </div>
+                    </td>
+
+   
+                  
+                </tr> 
+               
+               
+                
+                 
+            }
+
+
+
+        </tbody>
+      </table>
