@@ -10,8 +10,8 @@ public class DataContext : DbContext
   public DbSet<Discount> Discounts { get; set; }
   public DbSet<Customer> Customers { get; set; }
   public DbSet<CartItem> CartItems { get; set; }
-  public DbSet<OrderDetails> OrderDetails {get;set;}
-  public DbSet<Order> Orders {get;set;}
+  public DbSet<OrderDetails> OrderDetails { get; set; }
+  public DbSet<Order> Orders { get; set; }
 
   public void AddCustomer(Customer customer)
   {
@@ -31,13 +31,18 @@ public class DataContext : DbContext
     SaveChanges();
   }
 
-  public void EditCart (CartItem cartItem)
+  public void EditCart(CartItem cartItem)
   {
     var CartItemToUpdate = CartItems.FirstOrDefault(c => c.CartItemId == cartItem.CartItemId);
-    CartItemToUpdate.Quantity = cartItem.Quantity;
-    
+    if (CartItemToUpdate != null)
+    {
+      CartItemToUpdate.Quantity = cartItem.Quantity;
+      SaveChanges();
+    }
   }
-  public void DeleteCartItem(CartItem cartItem){
+
+  public void DeleteCartItem(CartItem cartItem)
+  {
     this.Remove(cartItem);
     this.SaveChanges();
 
@@ -69,4 +74,29 @@ public class DataContext : DbContext
     cartItem.Product = Products.Find(cartItem.ProductId);
     return cartItem;
   }
+
+  public CartItem UpdateCartItem(CartItemJSON cartItemJSON)
+  {
+    var customer = Customers.FirstOrDefault(c => c.Email == cartItemJSON.email);
+
+    if (customer == null)
+      return null;
+
+    int CustomerId = customer.CustomerId;
+    int ProductId = cartItemJSON.id;
+
+    CartItem cartItem = CartItems.FirstOrDefault(ci => ci.ProductId == ProductId && ci.CustomerId == CustomerId);
+
+    if (cartItem != null)
+    {
+      cartItem.Quantity = cartItemJSON.qty;
+      SaveChanges();
+      cartItem.Product = Products.Find(cartItem.ProductId);
+      return cartItem;
+    }
+
+    return null;
+  }
+
+
 }
