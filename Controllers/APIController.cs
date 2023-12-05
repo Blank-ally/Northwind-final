@@ -38,7 +38,8 @@ namespace Northwind.Controllers
 
          [HttpGet, Route("api/discount")]
         public IEnumerable<Discount> GetDiscounts() => _dataContext.Discounts.Include(p => p.Product);
-        
 
+        
+       
     }
 }
