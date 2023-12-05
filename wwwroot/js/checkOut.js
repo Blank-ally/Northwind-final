@@ -1,4 +1,7 @@
 $(function(){
+
+    $('#totalCheckOut').html((parseInt($('#total_cart_value').html()) + 25.50))
+
     $('#sameAsShipChx').on('change', function () {
         let fields = ['firstname', 'lastname', 'address', 'address2', 'email', 'city', 'state', 'zip'];
       
@@ -15,6 +18,7 @@ $(function(){
 
 
   var addedDiscountCodes = [];
+  var addedDiscountFull = [];
   var discounts = [];
 
   getDiscounts()
@@ -49,6 +53,7 @@ $('#DiscountSb').on('click', function(){
     for(var i = 0; i < discounts.length; i++){
       if($('#DiscountCd').val() == discounts[i].code){
         addedDiscountCodes.push($('#DiscountCd').val());
+        addedDiscountFull.push(discounts[i]);
         alert('discount ' + discounts[i].title + ' added for ' + (discounts[i].discountPercent * 100) + '%');
         $('#discontsAdded').append('<br>' + discounts[i].product.productName + ': ' + (discounts[i].discountPercent * 100) + '%');
         $('#DiscountCd').val('');
@@ -62,7 +67,26 @@ $('#DiscountSb').on('click', function(){
     alert('Discount already added')
   }
 
- 
+ console.log(addedDiscountFull)
 
   })
+
+  var cartItems = [];
+  var customerId = [];
+
+
+ 
+
+
+  $(document).on('change', function(){
+
+    
+
+    $('.indProdTotal').each(function( index ){
+      console.log($( this ).html())
+    })
+
+    $('#totalCheckOut').html((parseInt($('#total_cart_value').html()) + 25.50))
+
+  });
 })
