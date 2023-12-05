@@ -36,9 +36,9 @@ namespace Northwind.Controllers
         // updates a row in the cartitem table
         public CartItem Put([FromBody] CartItemJSON cartItem) => _dataContext.UpdateCartItem(cartItem);
 
-        [HttpGet, Route("api/discount")]
-        public IEnumerable<Discount> GetDiscounts() => _dataContext.Discounts;
 
+         [HttpGet, Route("api/discount")]
+        public IEnumerable<Discount> GetDiscounts() => _dataContext.Discounts.Include(p => p.Product);
 
         //route for checking out
         [HttpPost, Route("api/checkout")]
@@ -48,7 +48,6 @@ namespace Northwind.Controllers
             _dataContext.SaveChanges();
             return order;
         }
-
 
 
 
