@@ -41,6 +41,11 @@ public class CartController : Controller
 
     }
 
+    public IActionResult CheckOut(int id){
+        ViewBag.id = id;
+        return View(_dataContext.CartItems.Include(p => p.Product).Include(p => p.Customer).OrderBy(c => c.Product.ProductName));
+    }
+
     public IActionResult Update(CartItemJSON cartItemJSON)
     {
         // Fetching the item that matches the given id.
