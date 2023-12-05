@@ -25,7 +25,7 @@ $(function(){
       url: `../../api/discount/`,
       success: function (response, textStatus, jqXhr) {
           for (var i = 0; i < response.length; i++){
-            discounts.push(response[i].code)
+            discounts.push(response[i])
           }
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -36,18 +36,33 @@ $(function(){
 
     console.log(discounts)
 
-
 }
+
+
 
 
 $('#DiscountSb').on('click', function(){
 
-  let tempVal = $('#DiscountCd').val();
-    if(discounts.includes(tempVal)){
-      addedDiscountCodes.push(tempVal)
-    }else{
-      console.log('nope')
+
+  if(!addedDiscountCodes.includes($('#DiscountCd').val())){
+
+    for(var i = 0; i < discounts.length; i++){
+      if($('#DiscountCd').val() == discounts[i].code){
+        addedDiscountCodes.push($('#DiscountCd').val());
+        alert('discount ' + discounts[i].title + ' added for ' + (discounts[i].discountPercent * 100) + '%');
+        $('#discontsAdded').append('<br>' + discounts[i].product.productName + ': ' + (discounts[i].discountPercent * 100) + '%');
+        $('#DiscountCd').val('');
+        break;
+      }else{
+        console.log('nope');
+      }
     }
+
+  } else {
+    alert('Discount already added')
+  }
+
+ 
 
   })
 })
