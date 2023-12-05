@@ -209,32 +209,38 @@
                                             <td>@total.ToString("C")</td>
                                         </tr>
                                     }
-                            
-                                    
+
+
 
                                 </tbody>
                             </table>
                             <hr>
                             <div id='total'>
-                                Cost: $<span></span>
+                                Cost: <span id="total_cart_value">@Model.Sum(x => x.Quantity *
+                                    x.Product.UnitPrice).ToString("C")</span>
                                 <br>
                                 Applied Discounts: <span></span>
                                 <br>
                                 Shipping (standerd): $25.50
                                 <br>
-                                Total: 
+                                Total:
 
 
-                                
+
                             </div>
                             <hr>
-                                    
+
                             <div class="mb-3">
+
                                 <label for="Discounts" class="form-label">Discounts</label>
-                                <input type="text" class="form-control" name="" id="" aria-describedby="discounts"
+                                <input type="text" class="form-control" name="" id="DiscountCd" aria-describedby="discounts"
                                     placeholder="CODE">
-                                <small id="discounts" class="form-text text-muted">Enter any Discounts that may
-                                    apply</small>
+                                <small id="discounts" class="form-text text-muted">Enter any Discounts that may apply</small>
+                                <button type="button" class="btn btn-secondary btn-sm mt-2" id='DiscountSb'>Apply Discount</button>
+
+
+
+                               
                             </div>
                         </div>
                     </div>

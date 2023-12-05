@@ -14,17 +14,18 @@ $(function(){
     })
 
 
-  let addedDiscountCodes = [];
+  var addedDiscountCodes = [];
+  var discounts = [];
 
   getDiscounts()
   
   function getDiscounts() {
-    var discounts = [];
+
     $.getJSON({
       url: `../../api/discount/`,
       success: function (response, textStatus, jqXhr) {
           for (var i = 0; i < response.length; i++){
-            discounts.add(response[i]);
+            discounts.push(response[i].code)
           }
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -35,6 +36,18 @@ $(function(){
 
     console.log(discounts)
 
-    return discounts;
+
 }
+
+
+$('#DiscountSb').on('click', function(){
+
+  let tempVal = $('#DiscountCd').val();
+    if(discounts.includes(tempVal)){
+      addedDiscountCodes.push(tempVal)
+    }else{
+      console.log('nope')
+    }
+
+  })
 })
