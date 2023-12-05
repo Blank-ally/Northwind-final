@@ -32,13 +32,24 @@ namespace Northwind.Controllers
         [HttpPost, Route("api/addtocart")]
         // adds a row to the cartitem table
         public CartItem Post([FromBody] CartItemJSON cartItem) => _dataContext.AddToCart(cartItem);
-          [HttpPut, Route("api/UpdateCartItem")]
+        [HttpPut, Route("api/UpdateCartItem")]
         // updates a row in the cartitem table
         public CartItem Put([FromBody] CartItemJSON cartItem) => _dataContext.UpdateCartItem(cartItem);
 
+
          [HttpGet, Route("api/discount")]
         public IEnumerable<Discount> GetDiscounts() => _dataContext.Discounts.Include(p => p.Product);
-        
+
+        //route for checking out
+        [HttpPost, Route("api/checkout")]
+        public Order AddOrder([FromBody] Order order)
+        {
+            _dataContext.Orders.Add(order);
+            _dataContext.SaveChanges();
+            return order;
+        }
+
+
 
     }
 }

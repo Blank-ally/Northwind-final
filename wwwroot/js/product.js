@@ -193,4 +193,23 @@ $(function () {
       },
     });
   });
+
+  $("#checkout_button").on("click", function (e) {
+    e.preventDefault();
+
+    var order = {};
+
+    $.ajax({
+      type: "POST",
+      url: "../../api/Checkout",
+      contentType: "application/json",
+      data: JSON.stringify(order),
+      success: function (data) {
+        console.log("Checkout successful");
+      },
+      error: function (request, status, error) {
+        console.error("Error during checkout:", request.responseText);
+      },
+    });
+  });
 });
