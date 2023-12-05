@@ -37,7 +37,7 @@ namespace Northwind.Controllers
         public CartItem Put([FromBody] CartItemJSON cartItem) => _dataContext.UpdateCartItem(cartItem);
 
          [HttpGet, Route("api/discount")]
-        public IEnumerable<Discount> GetDiscounts() => _dataContext.Discounts;
+        public IEnumerable<Discount> GetDiscounts() => _dataContext.Discounts.Include(p => p.Product);
         
 
     }
