@@ -99,7 +99,9 @@
   <div class="row">
     <div class="col-md-6 offset-md-6">
 
-      <a class="btn btn-primary" id="checkout_button" asp-action="CheckOut" asp-route-id="@Model.FirstOrDefault().CustomerId"  >Check Out</a> 
+      @* <a class="btn btn-primary" id="checkout_button" asp-action="CheckOut" asp-route-id="@Model.FirstOrDefault().CustomerId"  >Check Out</a>  *@
+
+        <a  class="btn btn-primary" asp-controller="Cart" asp-action="CheckOut" >Checkout</a>
 
     </div>
   </div>
