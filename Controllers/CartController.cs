@@ -41,6 +41,11 @@ public class CartController : Controller
 
     }
 
+    public IActionResult CheckOut(int id)
+    {
+        ViewBag.id = id;
+        return View(_dataContext.CartItems.Include(p => p.Product).Include(p => p.Customer).OrderBy(c => c.Product.ProductName));
+    }
 
     public IActionResult Update(CartItemJSON cartItemJSON)
     {
@@ -51,23 +56,20 @@ public class CartController : Controller
 
     }
 
-    public IActionResult CheckOut(int id)
-    {
-         return View(_dataContext.CartItems.Where(c => c.CustomerId == id).Include(c => c.Product).ToList());
-    }
-
-
-    [HttpPost]
     public IActionResult Checkout(int iD)
     {
-        // var userId = User.Identity.Name;
+        var userId = User.Identity.Name;
 
         var orderModel = new Order();
 
         // Get the cart items for the current user
         var cartItems = _dataContext.CartItems.Where(c => c.CustomerId == iD).Include(c => c.Product).ToList();
 
-       
+        // Check if there are any items in the cart
+        if (!cartItems.Any())
+        {
+            return View("EmptyCartMessage");
+        }
 
         // Process the checkout
         using (var transaction = _dataContext.Database.BeginTransaction())
