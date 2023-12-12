@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Components.Forms;
 
 [Authorize]
 public class CartController : Controller
@@ -51,7 +52,40 @@ public class CartController : Controller
         return View(_dataContext.CartItems.Where(c => c.CustomerId == id).Include(p => p.Product).Include(p => p.Customer).OrderBy(c => c.Product.ProductName));
     }
 
-   
+
+    public IActionResult PlaceOrder(){
+       var order = new Order();
+       order.CustomerId = _dataContext.Customers.Where(c => c.Email == User.Identity.Name).FirstOrDefault().CustomerId;
+       order.OrderDate = DateTime.Now;
+       order.RequiredDate = DateTime.UtcNow.AddDays(10);
+       order.EmployeeId = 5;
+       order.ShipVia = 3;
+       _dataContext.AddOrder(order);
+
+var orderDetails = _dataContext.CartItems.Where(c => c.Customer.Email == User.Identity.Name ).Include(p => p.Product).Include(p => p.Customer).OrderBy(c => c.Product.ProductName).ToList();
+
+       foreach(var d in orderDetails){
+        var detail = new OrderDetails();
+           detail.OrderId = order.OrderId;
+             detail.ProductId = d.ProductId;
+             detail.UnitPrice = d.Product.UnitPrice;
+             detail.Quantity = (Int16) d.Quantity;
+             
+        _dataContext.AddOrderDetails(detail);
+        _dataContext.DeleteCartItem(d);
+    }
+
+          return RedirectToAction("orders","customer");
+        }
+      
+
+// [HttpPost]
+
+// public ActionResult PlaceOrder(Order order, List<OrderDetails> details){
+
+
+// return RedirectToAction("orders","customer");
+// }
 
 
     public IActionResult Update(CartItemJSON cartItemJSON)

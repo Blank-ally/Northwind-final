@@ -1,5 +1,6 @@
 @model IEnumerable<CartItem>
     
+    @* <form asp-action="PlaceOrder" method="post" enctype="multipart/form-data"> *@
 <div id="User" style="display:none;" data-email="@User.Identity.Name"
     data-customer="@User.IsInRole("northwind-customer")"></div>
 <div class="container">
@@ -263,10 +264,11 @@
 
             <div class="row">
                 <div class="col-md-6 offset-md-6">
-                    <button class="btn btn-primary" id="checkout_button">Place Order</button>
+                    <a  class="btn btn-primary" asp-controller="Cart" asp-action="PlaceOrder">Place Order</a>
+                    @* <button class="btn btn-primary" id="checkout_button">Place Order</button> *@
                 </div>
             </div>
-            
+            @* </form> *@
       
 
        
