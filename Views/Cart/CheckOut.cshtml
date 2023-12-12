@@ -208,6 +208,7 @@
                                             <td>@item.Product.UnitPrice.ToString("C")</td>
                                             <td>@item.Quantity</td>
                                             <td>@total.ToString("C")</td>
+                                            <td class="cartProductIDs" hidden>@item.ProductId</td>
 
                                         </tr>
                                     }
@@ -219,8 +220,8 @@
                             
                             <hr>
                             <div id='total'>
-                                Cost: $<span id="total_cart_value">@Model.Sum(x => x.Quantity *
-                                    x.Product.UnitPrice)</span>
+                                Cost: <span id="total_cart_value">@Model.Sum(x => x.Quantity *
+                                    x.Product.UnitPrice).ToString("C")</span>
                                 <br>
                                 Applied Discounts: <span id="discontsAdded"></span>
                                 <br>
