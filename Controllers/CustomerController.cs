@@ -75,7 +75,7 @@ public class CustomerController : Controller
     }
 
     // add customer reference 
-    public IActionResult Orders(Customer customer) => View(_dataContext.OrderDetails.Include(o => o.Order).Include(o => o.Order.Customer).Include(od =>od.Product));  //.Where(od => od.Order.Customer == customer)
+    public IActionResult Orders() => View(_dataContext.OrderDetails.Where(o =>o.Order.Customer.Email == User.Identity.Name).Include(o => o.Order).Include(o => o.Order.Customer).Include(od =>od.Product));  //.Where(od => od.Order.Customer == customer)
     
     private void AddErrorsFromResult(IdentityResult result)
     {

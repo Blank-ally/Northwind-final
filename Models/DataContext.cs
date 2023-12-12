@@ -98,18 +98,18 @@ public class DataContext : DbContext
     return null;
   }
 
-  public Order AddOrder(Order order)
+  public void AddOrder(Order order)
   {
     Orders.Add(order);
     SaveChanges();
-    return order;
+
   }
 
-  public OrderDetails AddOrderDetails(OrderDetails orderDetails)
+  public void AddOrderDetails(OrderDetails orderDetails)
   {
     OrderDetails.Add(orderDetails);
     SaveChanges();
-    return orderDetails;
+ 
   }
 }
 
